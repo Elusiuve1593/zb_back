@@ -7,6 +7,7 @@ import { join } from 'path';
   imports: [
     ConfigModule.forRoot({
       envFilePath: join(__dirname, '..', '.env'),
+      isGlobal: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
