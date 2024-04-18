@@ -41,6 +41,9 @@ export class AuthService {
     email,
     password,
   }: AuthenticationDTO): Promise<TokensDTO | null> {
+    if (!password) {
+      throw new UnauthorizedException('Password is required');
+    }
     const user = await this.authModel.findOne({ email });
     if (!user) throw new NotFoundException(`User with ${email} is not found`);
 

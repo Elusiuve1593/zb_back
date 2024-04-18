@@ -13,5 +13,5 @@ export class RegistrationDTO {
   @IsString()
   @IsNotEmpty()
   @MinLength(7)
-  password: string;
+  password: string; 
 }
