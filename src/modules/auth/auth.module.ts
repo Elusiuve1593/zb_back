@@ -5,7 +5,6 @@ import { BcryptService } from 'src/common/bcrypt/bcrypt.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Auth, AuthSchema } from './schema/auth.schema';
-import { AuthGuard } from 'src/common/guards/auth.guard';
 import { jwtConfig } from 'src/config/jwt.config';
 
 @Module({
@@ -14,6 +13,6 @@ import { jwtConfig } from 'src/config/jwt.config';
     JwtModule.registerAsync(jwtConfig),
   ],
   controllers: [AuthController],
-  providers: [AuthService, BcryptService, AuthGuard],
+  providers: [AuthService, BcryptService],
 })
 export class AuthModule {}

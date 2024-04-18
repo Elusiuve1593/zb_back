@@ -4,14 +4,13 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DealDTO } from './dto/deal.dto';
-import { Deal, RealEstate } from './schema/deal.schema';
+import { Deal } from './schema/deal.schema';
 
 @Injectable()
 export class DealService {
   private readonly s3Client = new S3Client({
     region: this.configService.getOrThrow('AWS_S3_REGION'),
   });
-
   constructor(
     private readonly configService: ConfigService,
     @InjectModel(Deal.name)
@@ -19,7 +18,7 @@ export class DealService {
   ) {}
 
   async realEstate(deal: DealDTO): Promise<Deal> {
-    return this.dealModel.create({ realEstate: deal });
+    return this.dealModel.create(deal);
   }
 
   async uploadFile(fileName: string, file: Buffer) {
@@ -32,7 +31,7 @@ export class DealService {
     );
   }
 
-  async getAllRealState(): Promise<RealEstate[] | any> {
+  async getAllRealState(): Promise<Deal[] | any> {
     return await this.dealModel.find();
   }
 }

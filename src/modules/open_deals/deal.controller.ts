@@ -11,19 +11,17 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DealService } from './deal.service';
 import { DealDTO } from './dto/deal.dto';
-import { Deal, RealEstate } from './schema/deal.schema';
+import { Deal } from './schema/deal.schema';
 
 @Controller('deal')
 export class DealController {
-  constructor(private readonly authService: DealService) {}
+  constructor(private readonly dealService: DealService) {}
 
-  //@UseGuards(AuthGuard)
   @Post('data')
   realEstate(@Body() deal: DealDTO): Promise<Deal> {
-    return this.authService.realEstate(deal);
+    return this.dealService.realEstate(deal);
   }
 
-  //@UseGuards(AuthGuard)
   @Post('image-upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
@@ -34,12 +32,11 @@ export class DealController {
     )
     file: Express.Multer.File,
   ) {
-    return this.authService.uploadFile(file.originalname, file.buffer);
+    return this.dealService.uploadFile(file.originalname, file.buffer);
   }
 
-  //@UseGuards(AuthGuard)
   @Get()
-  getAllRealState(): Promise<RealEstate[]> {
-    return this.authService.getAllRealState();
+  getAllRealState(): Promise<Deal[]> {
+    return this.dealService.getAllRealState();
   }
 }

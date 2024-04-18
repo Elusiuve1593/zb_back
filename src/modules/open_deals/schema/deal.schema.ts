@@ -2,7 +2,8 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 export type AuthDocument = Deal & Document;
 
-export class RealEstate {
+@Schema()
+export class Deal {
   @Prop({ required: false })
   subscription: string;
 
@@ -13,7 +14,7 @@ export class RealEstate {
   tiket: number;
 
   @Prop({ required: false })
-  yield: number;
+  yield$: number;
 
   @Prop({ required: false })
   daysLeft: number;
@@ -22,13 +23,7 @@ export class RealEstate {
   sold: number;
 
   @Prop({ required: false })
-  imageName: string;
-}
-
-@Schema()
-export class Deal {
-  @Prop({ type: [RealEstate], required: true })
-  realEstate: RealEstate[];
+  imageUrl: string;
 }
 
 export const DealSchema = SchemaFactory.createForClass(Deal);

@@ -15,7 +15,7 @@ export class DealDTO {
 
   @IsNotEmpty()
   @IsNumber()
-  yield: number;
+  yield$: number;
 
   @IsNotEmpty()
   @IsNumber()
