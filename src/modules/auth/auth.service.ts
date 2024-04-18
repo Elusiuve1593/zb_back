@@ -22,7 +22,7 @@ export class AuthService {
   ) {}
 
   async userRegistration(registration: RegistrationDTO): Promise<Auth> {
-    const hashedPassword = await this.bcrypt.hashPassword(
+    const hashedPassword = await this.bcrypt.hashPass(
       registration.password,
     );
     const newUser = await this.authModel.create({
