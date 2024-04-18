@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ArgonService } from 'src/common/argon/argon.service';
 import { DealController } from './deal.controller';
 import { Deal, DealSchema } from './schema/deal.schema';
 import { DealService } from './deal.service';
@@ -12,6 +13,6 @@ import { JwtModule } from '@nestjs/jwt';
     MongooseModule.forFeature([{ name: Deal.name, schema: DealSchema }]),
   ],
   controllers: [DealController],
-  providers: [DealService],
+  providers: [DealService, ArgonService],
 })
 export class DealModule {}

@@ -6,6 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ArgonService } from 'src/common/argon/argon.service';
 import { AuthenticationDTO } from './dto/authentication.dto';
 import { RegistrationDTO } from './dto/registration.dto';
 import { Auth } from './schema/auth.schema';
@@ -16,13 +17,17 @@ export class AuthService {
   constructor(
     @InjectModel(Auth.name)
     private readonly authModel: Model<Auth>,
+    private readonly argon: ArgonService,
     private readonly jwtService: JwtService,
   ) {}
 
   async userRegistration(registration: RegistrationDTO): Promise<Auth> {
+    const hashedPassword = await this.argon.hashPassword(
+      registration.password,
+    );
     const newUser = await this.authModel.create({
       ...registration,
-
+      password: hashedPassword,
     });
 
     return await this.authModel.findById(newUser._id).select('-password');
@@ -41,6 +46,12 @@ export class AuthService {
     }
     const user = await this.authModel.findOne({ email });
     if (!user) throw new NotFoundException(`User with ${email} is not found`);
+
+    const comparePassword = await this.argon.comparePassword(
+      user.password,
+      password,
+    );
+    if (!comparePassword) throw new UnauthorizedException('Incorrect password');
 
     const payload = { sub: user._id, userName: user.email };
 
